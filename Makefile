@@ -1,6 +1,7 @@
 NAME = philosophers
 
-SRC = main.c
+SRC = main.c \
+	utils.c
 
 INC = -I .
 LIB = -lpthread
