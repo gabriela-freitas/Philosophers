@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:53 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/23 21:27:36 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/23 21:33:52 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ enum e_actions{
 	die,
 	eat,
 	p_sleep
+};
+
+enum e_forks
+{
+	not_avaible,
+	avaible
 };
 
 typedef struct s_philo
