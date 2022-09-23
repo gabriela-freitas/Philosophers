@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:02 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/23 21:24:00 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/23 21:28:51 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	*routine(void *arg)
 	t_philo			*philo;
 
 	philo = (t_philo *)arg;
+	usleep(100 * data()->n_philos);
 	print_message(philo->id, "hello from here", PURPLE);
 	return (NULL);
 }
@@ -30,13 +31,13 @@ void	create_threads(void)
 	init_var(&philos, &tid);
 	i = -1;
 	gettimeofday(&(data()->start_time), NULL);
-	while (++i < data()->philos)
+	while (++i < data()->n_philos)
 	{
 		philos[i].id = i + 1;
 		pthread_create(&tid[i], NULL, routine, (void *)&philos[i]);
 	}
 	i = -1;
-	while (++i < data()->philos)
+	while (++i < data()->n_philos)
 		pthread_join(tid[i], NULL);
 	free(data()->forks);
 	free(philos);

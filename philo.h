@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:53 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/23 21:22:59 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/23 21:27:36 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	int				philos;
+	int				n_philos;
 	int				*forks;
 	suseconds_t		time_to[3];
 	int				must_eat;
