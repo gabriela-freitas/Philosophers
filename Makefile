@@ -1,8 +1,9 @@
 NAME = philosophers
 
 SRC =	main.c \
-		parse.c\
-		libft.c
+		parse.c \
+		libft.c \
+		utils.c
 
 INC = -I .
 LIB = -lpthread

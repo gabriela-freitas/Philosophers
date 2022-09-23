@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 14:45:53 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/23 20:10:31 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/23 20:37:37 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ long	ft_atol(const char *str)
 	int			signal;
 
 	i = 0;
-	while (str[i] == ' ' ||( str[i] >= 9 && str[i] <= 13))
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i ++;
 	signal = 1;
 	if (str[i] == '-' || str[i] == '+')

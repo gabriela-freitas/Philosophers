@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 20:10:33 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/23 20:24:03 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/23 21:04:56 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,4 @@ void	init_var(t_philo **philos, pthread_t **tid)
 	i = -1;
 	while (++i < data()->philos)
 		(*philos)[i].meals = 0;
-	gettimeofday(&(data()->start_time), NULL);
 }

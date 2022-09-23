@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:53 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/23 20:29:32 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/23 21:22:59 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@
 # include <sys/time.h>
 # include <stdlib.h>
 # include <unistd.h>
+# define GREEN "\033[0;32m"
+# define RED "\033[1;31m"
+# define PURPLE "\033[1;35m"
+# define BLUE "\033[1;37m"
+# define YELLOW "\033[0;33m"
+# define GREY "\033[0;40m"
+# define COLOUR_END "\033[0m"
 
 enum e_actions{
 	die,
@@ -49,4 +56,6 @@ t_data	*data(void);
 long	ft_atol(const char *str);
 void	*ft_calloc(size_t count, size_t size);
 
+//utils.c
+void	print_message(int id, char *message, char *colour);
 #endif
