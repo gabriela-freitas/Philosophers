@@ -1,7 +1,8 @@
 NAME = philosophers
 
-SRC = main.c \
-	utils.c
+SRC =	main.c \
+		parse.c\
+		libft.c
 
 INC = -I .
 LIB = -lpthread
@@ -28,7 +29,7 @@ fclean: clean
 	@echo "$(COLOUR_YELLOW) $(NAME) cleaned $(COLOUR_END)"
 
 test: clean all
-	./$(NAME)
+	./$(NAME) 20 100 50 200
 
 valgrind: clean all
 	valgrind ./$(NAME)
