@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 20:10:33 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/23 21:27:29 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/25 19:12:30 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ t_data	*data(void)
 	return (&data);
 }
 
+/*
+check_times_eat will be incremented each time
+a philosophers eats must_eat times (if this arg was given)
+*/
 int	parse_args(int ac, char **av)
 {
 	data()->n_philos = ft_atol(av[1]);
@@ -28,13 +32,16 @@ int	parse_args(int ac, char **av)
 	if (ac == 6)
 		data()->must_eat = ft_atol(av[5]);
 	else
-		data()->must_eat = -1;
+		data()->must_eat = 0;
 	if (data()->n_philos <= 0 || data()->time_to[die] <= 0
 		|| data()->time_to[eat] <= 0 || data()->time_to[p_sleep] <= 0)
 	{
 		printf("invalid entry (must be numbers > 0)\n");
 		return (0);
 	}
+	data()->all_alive = TRUE;
+	data()->check_times_eat = 0;
+	init_mutexes();
 	return (1);
 }
 

@@ -6,20 +6,59 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 20:36:36 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/23 21:29:54 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/25 19:27:53 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 //FIXME: Am I dealing right with the time stamps? Can it be more exact?
-//Add a mutex here
+/*messages:
+◦ timestamp_in_ms X has taken a fork
+◦ timestamp_in_ms X is eating
+◦ timestamp_in_ms X is sleeping
+◦ timestamp_in_ms X is thinking
+◦ timestamp_in_ms X died*/
+
+//will eating, sleeping, thinking be consecutive? I think so
+
 void	print_message(int id, char *message, char *colour)
 {
+	pthread_mutex_lock(&data()->mutex.print);
+	printf("%s", colour);
+	printf("[%ld ms] %d %s", get_program_time(), id, message);
+	printf("%s\n", COLOUR_END);
+	pthread_mutex_unlock(&data()->mutex.print);
+}
+
+void	init_mutexes(void)
+{
+	int	i;
+
+	pthread_mutex_init(&data()->mutex.print, NULL);
+	data()->mutex.forks = malloc(sizeof(pthread_mutex_t) * data()->n_philos);
+	i = -1;
+	while (++i < data()->n_philos)
+		pthread_mutex_init(&data()->mutex.forks[i], NULL);
+}
+
+void	clean_program(void)
+{
+	int	i;
+
+	free(data()->forks);
+	pthread_mutex_destroy(&data()->mutex.print);
+	i = -1;
+	while (++i < data()->n_philos)
+		pthread_mutex_destroy(&data()->mutex.forks[i]);
+}
+
+suseconds_t	get_program_time(void)
+{
 	struct timeval	time;
+
 	gettimeofday(&time, NULL);
 	time.tv_usec -= data()->start_time.tv_usec;
-	printf("%s", colour);
-	printf("[%ld ms] %d %s", time.tv_usec, id, message);
-	printf("%s\n", COLOUR_END);
+
+	return (time.tv_usec);
 }

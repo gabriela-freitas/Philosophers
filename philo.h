@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:53 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/23 21:33:52 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/25 19:25:59 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <sys/time.h>
 # include <stdlib.h>
 # include <unistd.h>
+# define TRUE 1
+# define FALSE 0
 # define GREEN "\033[0;32m"
 # define RED "\033[1;31m"
 # define PURPLE "\033[1;35m"
@@ -44,24 +46,39 @@ typedef struct s_philo
 	int	meals;
 }	t_philo;
 
+typedef struct s_mutex
+{
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	print;
+	pthread_mutex_t	check_times_eat;
+	pthread_mutex_t	is_alive;
+}	t_mutex;
+
 typedef struct s_data
 {
 	int				n_philos;
 	int				*forks;
 	suseconds_t		time_to[3];
 	int				must_eat;
+	int				check_times_eat;
 	struct timeval	start_time;
+	t_mutex			mutex;
+	int				all_alive;
 }	t_data;
 
 //parse.c
-int		parse_args(int ac, char **av);
-void	init_var(t_philo **philos, pthread_t **tid);
-t_data	*data(void);
+int			parse_args(int ac, char **av);
+void		init_var(t_philo **philos, pthread_t **tid);
+t_data		*data(void);
 
 //libft.c
-long	ft_atol(const char *str);
-void	*ft_calloc(size_t count, size_t size);
+long		ft_atol(const char *str);
+void		*ft_calloc(size_t count, size_t size);
 
 //utils.c
-void	print_message(int id, char *message, char *colour);
+void		print_message(int id, char *message, char *colour);
+void		init_mutexes(void);
+void		clean_program(void);
+suseconds_t	get_program_time(void);
+
 #endif
