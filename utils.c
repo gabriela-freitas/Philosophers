@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 20:36:36 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/25 19:27:53 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/27 17:38:57 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	print_message(int id, char *message, char *colour)
 {
 	pthread_mutex_lock(&data()->mutex.print);
 	printf("%s", colour);
-	printf("[%ld ms] %d %s", get_program_time(), id, message);
+	printf("[%ld ms] %d %s", get_program_time(data()->start_time), id, message);
 	printf("%s\n", COLOUR_END);
 	pthread_mutex_unlock(&data()->mutex.print);
 }
@@ -46,19 +46,27 @@ void	clean_program(void)
 {
 	int	i;
 
-	free(data()->forks);
 	pthread_mutex_destroy(&data()->mutex.print);
 	i = -1;
 	while (++i < data()->n_philos)
 		pthread_mutex_destroy(&data()->mutex.forks[i]);
 }
 
-suseconds_t	get_program_time(void)
+suseconds_t	get_program_time(struct timeval start_time)
 {
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	time.tv_usec -= data()->start_time.tv_usec;
-
+	time.tv_usec -= start_time.tv_usec;
 	return (time.tv_usec);
+}
+
+struct timeval	my_sleep(suseconds_t time_to)
+{
+	struct timeval	start;
+
+	gettimeofday(&start, NULL);
+	while (get_program_time(start) < time_to)
+		;
+	return (start);
 }

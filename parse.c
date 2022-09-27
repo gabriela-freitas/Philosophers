@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 20:10:33 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/25 19:12:30 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/27 17:34:22 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@ t_data	*data(void)
 	return (&data);
 }
 
-/*
-check_times_eat will be incremented each time
-a philosophers eats must_eat times (if this arg was given)
-*/
 int	parse_args(int ac, char **av)
 {
 	data()->n_philos = ft_atol(av[1]);
@@ -39,20 +35,23 @@ int	parse_args(int ac, char **av)
 		printf("invalid entry (must be numbers > 0)\n");
 		return (0);
 	}
-	data()->all_alive = TRUE;
-	data()->check_times_eat = 0;
-	init_mutexes();
 	return (1);
 }
 
+/*
+check_times_eat will be incremented each time
+a philosophers eats must_eat times (if this arg was given)
+*/
 void	init_var(t_philo **philos, pthread_t **tid)
 {
 	int	i;
 
-	(data()->forks) = ft_calloc(sizeof(int), data()->n_philos);
 	*philos = malloc(sizeof(t_philo) * data()->n_philos);
 	*tid = malloc(sizeof(pthread_t) * data()->n_philos);
 	i = -1;
 	while (++i < data()->n_philos)
 		(*philos)[i].meals = 0;
+	data()->all_alive = TRUE;
+	data()->check_times_eat = 0;
+	init_mutexes();
 }

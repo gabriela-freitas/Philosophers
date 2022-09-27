@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:02 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/25 19:34:00 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/27 18:23:33 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	print_message(philo->id, "hello from here", PURPLE);
-	//while (1)
-	//check if all alive
-		//true: philo_eat()
-	//false: break
+	while (1)
+	{
+		philo_eat(philo);
+		philo_sleep_think(philo);
+	}
 	return (NULL);
 }
 
