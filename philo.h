@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:53 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/27 18:15:58 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/28 21:08:06 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,6 @@ enum e_actions{
 	p_sleep
 };
 
-enum e_forks
-{
-	not_avaible,
-	avaible
-};
-
 typedef struct s_philo
 {
 	int				id;
@@ -51,7 +45,7 @@ typedef struct s_mutex
 {
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
-	pthread_mutex_t	check_times_eat;
+	// pthread_mutex_t	check_times_eat;
 	pthread_mutex_t	is_alive;
 }	t_mutex;
 
@@ -76,14 +70,16 @@ long			ft_atol(const char *str);
 void			*ft_calloc(size_t count, size_t size);
 
 //routines.c
-void			philo_eat(t_philo *philo);
+int				philo_eat(t_philo *philo);
 void			philo_sleep_think(t_philo *philo);
+void			philo_die(t_philo *philo);
+int				check_if_alive(t_philo *philo);
 
 //utils.c
 void			print_message(int id, char *message, char *colour);
 void			init_mutexes(void);
 void			clean_program(void);
 suseconds_t		get_program_time(struct timeval start_time);
-struct timeval	my_sleep(suseconds_t time_to);
+suseconds_t		my_sleep(suseconds_t time_to);
 
 #endif

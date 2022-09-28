@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:02 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/27 18:23:33 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/28 21:03:22 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ void	*routine(void *arg)
 	t_philo			*philo;
 
 	philo = (t_philo *)arg;
-	print_message(philo->id, "hello from here", PURPLE);
+	gettimeofday(&philo->eat_time, NULL);
 	while (1)
 	{
-		philo_eat(philo);
-		philo_sleep_think(philo);
+		if (!check_if_alive(philo))
+			break ;
+		if (philo_eat(philo))
+			philo_sleep_think(philo);
 	}
 	return (NULL);
 }

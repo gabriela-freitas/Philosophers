@@ -10,7 +10,7 @@ INC = -I .
 LIB = -lpthread
 
 CC = gcc
-FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -g -fsanitize=thread -pthread
 
 RM = rm -f
 
