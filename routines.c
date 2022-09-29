@@ -6,33 +6,21 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 19:16:40 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/28 21:13:30 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/29 15:03:10 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+static void	decide_fork(t_philo *philo, int *first, int *second);
+
 //alternar se for par ou impar (comecar pela direita ou esquerda)
 int	philo_eat(t_philo *philo)
 {
-	int	right_fork;
 	int	first;
 	int	second;
 
-	if (philo->id == 1)
-		right_fork = data()->n_philos - 1;
-	else
-		right_fork = philo->id - 2;
-	if (philo->id % 2 == 0)
-	{
-		first = right_fork;
-		second = philo->id - 1;
-	}
-	else
-	{
-		first = philo->id - 1;
-		second = right_fork;
-	}
+	decide_fork(philo, &first, &second);
 	pthread_mutex_lock(&data()->mutex.forks[first]);
 	print_message(philo->id, "has taken a fork", GREY);
 	pthread_mutex_lock(&data()->mutex.forks[second]);
@@ -92,4 +80,24 @@ int	check_if_alive(t_philo *philo)
 		return (FALSE);
 	}
 	return (TRUE);
+}
+
+static void	decide_fork(t_philo *philo, int *first, int *second)
+{
+	int	right_fork;
+
+	if (philo->id == 1)
+	right_fork = data()->n_philos - 1;
+	else
+		right_fork = philo->id - 2;
+	if (philo->id % 2 == 0)
+	{
+		*first = right_fork;
+		*second = philo->id - 1;
+	}
+	else
+	{
+		*first = philo->id - 1;
+		*second = right_fork;
+	}
 }
