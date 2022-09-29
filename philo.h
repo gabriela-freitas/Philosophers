@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:53 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/29 16:54:01 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/29 17:39:53 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_mutex
 {
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
-	// pthread_mutex_t	check_times_eat;
+	pthread_mutex_t	check_times_eat;
 	pthread_mutex_t	is_alive;
 }	t_mutex;
 
@@ -72,8 +72,8 @@ void			*ft_calloc(size_t count, size_t size);
 //routines.c
 int				philo_eat(t_philo *philo);
 void			philo_sleep_think(t_philo *philo);
-void			philo_die(t_philo *philo);
-int				check_if_alive(t_philo *philo);
+void			philo_die(int philo_id);
+int				check_if_alive(void);
 
 //utils.c
 void			print_message(int id, char *message, char *colour);

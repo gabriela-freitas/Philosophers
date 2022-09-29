@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 20:36:36 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/28 20:49:25 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/29 17:39:58 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	init_mutexes(void)
 
 	pthread_mutex_init(&data()->mutex.print, NULL);
 	pthread_mutex_init(&data()->mutex.is_alive, NULL);
+	pthread_mutex_init(&data()->mutex.check_times_eat, NULL);
 	data()->mutex.forks = malloc(sizeof(pthread_mutex_t) * data()->n_philos);
 	i = -1;
 	while (++i < data()->n_philos)

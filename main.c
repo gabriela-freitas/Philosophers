@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:02 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/29 16:54:38 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/29 17:27:20 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*routine(void *arg)
 	gettimeofday(&data()->eat_time[philo->id - 1], NULL);
 	while (1)
 	{
-		if (!check_if_alive(philo))
+		if (!check_if_alive())
 			break ;
 		if (philo_eat(philo))
 			philo_sleep_think(philo);
