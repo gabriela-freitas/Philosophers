@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 19:16:40 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/29 17:43:53 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/29 20:41:58 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	philo_eat(t_philo *philo)
 		pthread_mutex_unlock(&data()->mutex.forks[first]);
 		return (FALSE);
 	}
+	print_message(philo->id, "has taken a fork", GREY);
 	print_message(philo->id, "is eating", GREEN);
 	my_sleep(data()->time_to[eat]);
 	pthread_mutex_unlock(&data()->mutex.forks[second]);
