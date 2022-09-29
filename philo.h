@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:53 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/28 21:08:06 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/29 16:54:01 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_philo
 {
 	int				id;
 	int				meals;
-	struct timeval	eat_time;
 }	t_philo;
 
 typedef struct s_mutex
@@ -57,6 +56,7 @@ typedef struct s_data
 	int				check_times_eat;
 	struct timeval	start_time;
 	t_mutex			mutex;
+	struct timeval	*eat_time;
 	int				all_alive;
 }	t_data;
 

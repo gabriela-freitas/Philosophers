@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 19:16:40 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/29 17:18:16 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/29 17:19:29 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	philo_eat(t_philo *philo)
 	pthread_mutex_lock(&data()->mutex.forks[second]);
 	print_message(philo->id, "is eating", GREEN);
 	my_sleep(data()->time_to[eat]);
-	gettimeofday(&philo->eat_time, NULL);
+	gettimeofday(&data()->eat_time[philo->id - 1], NULL);
 	pthread_mutex_unlock(&data()->mutex.forks[second]);
 	pthread_mutex_unlock(&data()->mutex.forks[first]);
 	return (TRUE);
@@ -66,6 +66,9 @@ void	philo_die(t_philo *philo)
 	i.e haven't passed enough time_to_die since last meal*/
 int	check_if_alive(t_philo *philo)
 {
+	struct timeval	eat_time;
+
+	eat_time = data()->eat_time[philo->id - 1];
 	pthread_mutex_lock(&data()->mutex.is_alive);
 	if (!data()->all_alive)
 	{
@@ -73,7 +76,7 @@ int	check_if_alive(t_philo *philo)
 		return (FALSE);
 	}
 	pthread_mutex_unlock(&data()->mutex.is_alive);
-	if (get_program_time(philo->eat_time) > data()->time_to[die])
+	if (get_program_time(eat_time) > data()->time_to[die])
 	{
 		print_message(philo->id, "is dead", RED);
 		return (FALSE);
