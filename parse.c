@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 20:10:33 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/27 17:34:22 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/29 16:56:36 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	init_var(t_philo **philos, pthread_t **tid)
 	int	i;
 
 	*philos = malloc(sizeof(t_philo) * data()->n_philos);
+	data()->eat_time = malloc(sizeof(struct timeval) * data()->n_philos);
 	*tid = malloc(sizeof(pthread_t) * data()->n_philos);
 	i = -1;
 	while (++i < data()->n_philos)
