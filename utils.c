@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 20:36:36 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/29 17:39:58 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/29 20:51:37 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ suseconds_t	get_program_time(struct timeval start_time)
 
 	gettimeofday(&time, NULL);
 	time.tv_usec -= start_time.tv_usec;
-	return (time.tv_usec);
+	return (time.tv_usec / 1000);
 }
 
 /*My version of usleep, returns the start time + time asleep*/
@@ -77,5 +77,6 @@ suseconds_t	my_sleep(suseconds_t time_to)
 	gettimeofday(&start, NULL);
 	while (get_program_time(start) < time_to)
 		;
+	//FIXME: checar se alguem morre enquanto isso!
 	return (start.tv_sec + time_to);
 }
