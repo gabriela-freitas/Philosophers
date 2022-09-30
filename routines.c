@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 19:16:40 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/29 20:41:58 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/30 17:48:11 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	philo_eat(t_philo *philo)
 		pthread_mutex_unlock(&data()->mutex.forks[first]);
 		return (FALSE);
 	}
-	print_message(philo->id, "has taken a fork", GREY);
+	print_message(philo->id, "has taken first fork", GREY);
 	pthread_mutex_lock(&data()->mutex.forks[second]);
 	if (!check_if_alive())
 	{
@@ -35,11 +35,13 @@ int	philo_eat(t_philo *philo)
 		pthread_mutex_unlock(&data()->mutex.forks[first]);
 		return (FALSE);
 	}
-	print_message(philo->id, "has taken a fork", GREY);
+	print_message(philo->id, "has taken second fork", GREY);
 	print_message(philo->id, "is eating", GREEN);
 	my_sleep(data()->time_to[eat]);
+	// usleep(data()->time_to[eat] * 1000);
 	pthread_mutex_unlock(&data()->mutex.forks[second]);
 	pthread_mutex_unlock(&data()->mutex.forks[first]);
+	print_message(philo->id, "finished eating", YELLOW);
 	pthread_mutex_lock(&data()->mutex.check_times_eat);
 	gettimeofday(&data()->eat_time[philo->id - 1], NULL);
 	pthread_mutex_unlock(&data()->mutex.check_times_eat);
@@ -54,17 +56,19 @@ void	philo_sleep_think(t_philo *philo)
 	if (!check_if_alive())
 		return ;
 	print_message(philo->id, "is sleeping", BLUE);
-	while (get_program_time(start) < data()->time_to[p_sleep])
+	while (get_program_time(start) <= data()->time_to[p_sleep])
 	{
-		if (get_program_time(start) > data()->time_to[die])
+		if (get_program_time(start) >= data()->time_to[die])
 		{
 			philo_die(philo->id);
 			return ;
 		}
 	}
+	print_message(philo->id, "is awake", YELLOW);
 	if (!check_if_alive())
 		return ;
 	print_message(philo->id, "is thinking", PURPLE);
+	my_sleep(1);
 }
 
 void	philo_die(int philo_id)

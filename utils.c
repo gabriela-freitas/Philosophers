@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 20:36:36 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/29 20:51:37 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/09/30 17:43:33 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	init_mutexes(void)
 	pthread_mutex_init(&data()->mutex.print, NULL);
 	pthread_mutex_init(&data()->mutex.is_alive, NULL);
 	pthread_mutex_init(&data()->mutex.check_times_eat, NULL);
+	// pthread_mutex_init(&data()->mutex.init, NULL);
 	data()->mutex.forks = malloc(sizeof(pthread_mutex_t) * data()->n_philos);
 	i = -1;
 	while (++i < data()->n_philos)
@@ -76,7 +77,9 @@ suseconds_t	my_sleep(suseconds_t time_to)
 
 	gettimeofday(&start, NULL);
 	while (get_program_time(start) < time_to)
-		;
-	//FIXME: checar se alguem morre enquanto isso!
+	{
+		if (!check_if_alive())
+			return (0);
+	}
 	return (start.tv_sec + time_to);
 }
