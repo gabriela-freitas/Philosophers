@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:02 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/30 17:46:24 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/10/01 21:42:18 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ void	*routine(void *arg)
 	// philo->time_to[p_sleep] = data()->time_to[p_sleep];
 	// philo->time_to[die] = data()->time_to[die];
 	// pthread_mutex_unlock(&data()->mutex.init);
-	gettimeofday(&data()->eat_time[philo->id - 1], NULL);
+	pthread_mutex_lock(&data()->mutex.is_alive);
+	data()->eat_time[philo->id - 1] = get_program_time(0);
+	pthread_mutex_unlock(&data()->mutex.is_alive);
 	while (TRUE)
 	{
 		if (!check_if_alive())
@@ -35,13 +37,14 @@ void	*routine(void *arg)
 
 void	create_threads(void)
 {
-	int			i;
-	pthread_t	*tid;
-	t_philo		*philos;
+	int				i;
+	pthread_t		*tid;
+	t_philo			*philos;
 
 	init_var(&philos, &tid);
 	i = -1;
-	gettimeofday(&(data()->start_time), NULL);
+	data()->start_time = get_program_time(0);
+	printf("%sDEBUG: %lld%s\n", YELLOW, data()->start_time, COLOUR_END);
 	while (++i < data()->n_philos)
 	{
 		philos[i].id = i + 1;

@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:53 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/30 17:39:23 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/10/01 18:41:24 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ typedef struct s_data
 	suseconds_t		time_to[3];
 	int				must_eat;
 	int				check_times_eat;
-	struct timeval	start_time;
+	long long		start_time;
 	t_mutex			mutex;
-	struct timeval	*eat_time;
+	long long		*eat_time;
 	int				all_alive;
 }	t_data;
 
@@ -81,7 +81,7 @@ int				check_if_alive(void);
 void			print_message(int id, char *message, char *colour);
 void			init_mutexes(void);
 void			clean_program(void);
-suseconds_t		get_program_time(struct timeval start_time);
-suseconds_t		my_sleep(suseconds_t time_to);
+long long		get_program_time(long long start_time);
+long long		my_sleep(long long time_to);
 
 #endif

@@ -31,7 +31,7 @@ fclean: clean
 	@echo "$(COLOUR_YELLOW) $(NAME) cleaned $(COLOUR_END)"
 
 test: clean all
-	./$(NAME) 6 500 50 200 8
+	./$(NAME) 4 310 200 100
 
 valgrind: clean all
 	valgrind ./$(NAME)

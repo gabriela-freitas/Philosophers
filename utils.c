@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 20:36:36 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/30 17:43:33 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/10/01 21:16:58 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,26 +60,28 @@ void	clean_program(void)
 		pthread_mutex_destroy(&data()->mutex.forks[i]);
 }
 
-/*returns program_time as current time - start_time given as arg*/
-suseconds_t	get_program_time(struct timeval start_time)
+/*returns program_time as current time - start_time given as arg
+in miliseconds*/
+long long	get_program_time(long long start_time)
 {
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	time.tv_usec -= start_time.tv_usec;
-	return (time.tv_usec / 1000);
+	return ((time.tv_sec * 1000 + time.tv_usec / 1000) - start_time);
 }
 
 /*My version of usleep, returns the start time + time asleep*/
-suseconds_t	my_sleep(suseconds_t time_to)
+long long	my_sleep(long long time_to)
 {
-	struct timeval	start;
+	struct timeval	time;
+	long long		start;
 
-	gettimeofday(&start, NULL);
-	while (get_program_time(start) < time_to)
+	gettimeofday(&time, NULL);
+	start = time.tv_sec * 1000 + time.tv_usec / 1000;
+	while (get_program_time(start) <= time_to)
 	{
 		if (!check_if_alive())
 			return (0);
 	}
-	return (start.tv_sec + time_to);
+	return (start + time_to);
 }

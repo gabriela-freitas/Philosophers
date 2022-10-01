@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 19:16:40 by gafreita          #+#    #+#             */
-/*   Updated: 2022/09/30 17:48:11 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/10/01 21:44:06 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,15 @@ int	philo_eat(t_philo *philo)
 	}
 	print_message(philo->id, "has taken second fork", GREY);
 	print_message(philo->id, "is eating", GREEN);
+	pthread_mutex_lock(&data()->mutex.is_alive);
+	data()->eat_time[philo->id - 1] = 0;
+	pthread_mutex_unlock(&data()->mutex.is_alive);
 	my_sleep(data()->time_to[eat]);
-	// usleep(data()->time_to[eat] * 1000);
+	pthread_mutex_lock(&data()->mutex.is_alive);
+	data()->eat_time[philo->id - 1] = get_program_time(0);
+	pthread_mutex_unlock(&data()->mutex.is_alive);
 	pthread_mutex_unlock(&data()->mutex.forks[second]);
 	pthread_mutex_unlock(&data()->mutex.forks[first]);
-	print_message(philo->id, "finished eating", YELLOW);
-	pthread_mutex_lock(&data()->mutex.check_times_eat);
-	gettimeofday(&data()->eat_time[philo->id - 1], NULL);
-	pthread_mutex_unlock(&data()->mutex.check_times_eat);
 	return (TRUE);
 }
 
@@ -56,19 +57,11 @@ void	philo_sleep_think(t_philo *philo)
 	if (!check_if_alive())
 		return ;
 	print_message(philo->id, "is sleeping", BLUE);
-	while (get_program_time(start) <= data()->time_to[p_sleep])
-	{
-		if (get_program_time(start) >= data()->time_to[die])
-		{
-			philo_die(philo->id);
-			return ;
-		}
-	}
-	print_message(philo->id, "is awake", YELLOW);
+	my_sleep(data()->time_to[p_sleep]);
 	if (!check_if_alive())
 		return ;
 	print_message(philo->id, "is thinking", PURPLE);
-	my_sleep(1);
+	my_sleep(10);
 }
 
 void	philo_die(int philo_id)
@@ -84,7 +77,7 @@ void	philo_die(int philo_id)
 	i.e haven't passed enough time_to_die since last meal*/
 int	check_if_alive(void)
 {
-	struct timeval	eat_time;
+	long long		eat_time;
 	int				i;
 
 	pthread_mutex_lock(&data()->mutex.is_alive);
@@ -93,21 +86,21 @@ int	check_if_alive(void)
 		pthread_mutex_unlock(&data()->mutex.is_alive);
 		return (FALSE);
 	}
-	pthread_mutex_unlock(&data()->mutex.is_alive);
-	pthread_mutex_lock(&data()->mutex.check_times_eat);
+	// pthread_mutex_lock(&data()->mutex.is_alive);
 	i = -1;
 	while (++i < data()->n_philos)
 	{
 		eat_time = data()->eat_time[i];
-		if (eat_time.tv_usec
-			&& get_program_time(eat_time) > data()->time_to[die])
+		if (eat_time && get_program_time(eat_time) > data()->time_to[die])
 		{
-			pthread_mutex_unlock(&data()->mutex.check_times_eat);
+			pthread_mutex_unlock(&data()->mutex.is_alive);
+			// pthread_mutex_unlock(&data()->mutex.is_alive);
 			philo_die(i + 1);
 			return (FALSE);
 		}
 	}
-	pthread_mutex_unlock(&data()->mutex.check_times_eat);
+	// pthread_mutex_unlock(&data()->mutex.is_alive);
+	pthread_mutex_unlock(&data()->mutex.is_alive);
 	return (TRUE);
 }
 
