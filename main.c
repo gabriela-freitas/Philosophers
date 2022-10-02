@@ -6,22 +6,42 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:02 by gafreita          #+#    #+#             */
-/*   Updated: 2022/10/01 21:42:18 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/10/02 15:55:24 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+
+/*evaluation tests
+
+# Do not test with more than 200 philosophers
+# Do not test with time_to_die or time_to_eat or time_to_sleep under 60 ms
+# ./philo 1 800 200 200, the philosopher should not eat and should die!
+# ./philo 5 800 200 200, no one should die!
+# ./philo 5 800 200 200 7
+	 no one should die and the simulation should stop when all
+	 the philosopher has eaten at least 7 times each.
+# ./philo 4 410 200 200, no one should die!
+# ./philo 4 310 200 100, a philosopher should die!
+# Test with 2 philosophers and check the different times
+	(a death delayed by more than 10 ms is unacceptable).
+# Test with your values to check all the rules. Check if a philosopher
+	dies at the right time if they don't steal forks, etc.
+*/
 
 void	*routine(void *arg)
 {
 	t_philo			*philo;
 
 	philo = (t_philo *)arg;
-	// pthread_mutex_lock(&data()->mutex.init);
-	// philo->time_to[eat] = data()->time_to[eat];
-	// philo->time_to[p_sleep] = data()->time_to[p_sleep];
-	// philo->time_to[die] = data()->time_to[die];
-	// pthread_mutex_unlock(&data()->mutex.init);
+	if (data()->n_philos == 1)
+	{
+		print_message(philo->id, "has taken first fork", GREY);
+		my_sleep(data()->time_to[die]);
+		philo_die(philo->id);
+		return (FALSE);
+	}
 	pthread_mutex_lock(&data()->mutex.is_alive);
 	data()->eat_time[philo->id - 1] = get_program_time(0);
 	pthread_mutex_unlock(&data()->mutex.is_alive);
@@ -44,7 +64,6 @@ void	create_threads(void)
 	init_var(&philos, &tid);
 	i = -1;
 	data()->start_time = get_program_time(0);
-	printf("%sDEBUG: %lld%s\n", YELLOW, data()->start_time, COLOUR_END);
 	while (++i < data()->n_philos)
 	{
 		philos[i].id = i + 1;
@@ -68,7 +87,11 @@ int	main(int ac, char **av)
 	}
 	else
 	{
-		printf("Usage:\n ./philosophers n_of_philo time_to_die time_to_eat ");
-		printf("time_to_sleep [number_of_times_each_philosopher_must_eat]\n");
+		printf("  The program must take these args:\n");
+		printf("\t%sn_of_philo%s\n", GREY, COLOUR_END);
+		printf("\t%stime_to_die%s\n", RED, COLOUR_END);
+		printf("\t%stime_to_eat%s\n", GREEN, COLOUR_END);
+		printf("\t%stime_to_sleep%s\n\tOptional: %s", BLUE, COLOUR_END, YELLOW);
+		printf("number_of_times_each_philosopher_must_eat\n%s", COLOUR_END);
 	}
 }

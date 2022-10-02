@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 20:10:33 by gafreita          #+#    #+#             */
-/*   Updated: 2022/10/01 18:48:53 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/10/02 15:56:42 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	parse_args(int ac, char **av)
 	if (data()->n_philos <= 0 || data()->time_to[die] <= 0
 		|| data()->time_to[eat] <= 0 || data()->time_to[p_sleep] <= 0)
 	{
-		printf("invalid entry (must be numbers > 0)\n");
+		printf("%sInvalid entry (must be only positive numbers)%s\n", RED, COLOUR_END);
 		return (0);
 	}
 	return (1);

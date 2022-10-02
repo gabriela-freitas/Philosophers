@@ -1,10 +1,11 @@
-NAME = philosophers
+NAME = philo
 
 SRC =	main.c \
 		parse.c \
 		libft.c \
 		utils.c \
-		routines.c
+		routines.c \
+		eat_routine.c
 
 INC = -I .
 LIB = -lpthread

@@ -6,54 +6,16 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 19:16:40 by gafreita          #+#    #+#             */
-/*   Updated: 2022/10/01 21:44:06 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/10/02 15:44:02 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	decide_fork(t_philo *philo, int *first, int *second);
-
-//alternar se for par ou impar (comecar pela direita ou esquerda)
-int	philo_eat(t_philo *philo)
-{
-	int	first;
-	int	second;
-
-	decide_fork(philo, &first, &second);
-	pthread_mutex_lock(&data()->mutex.forks[first]);
-	if (!check_if_alive())
-	{
-		pthread_mutex_unlock(&data()->mutex.forks[first]);
-		return (FALSE);
-	}
-	print_message(philo->id, "has taken first fork", GREY);
-	pthread_mutex_lock(&data()->mutex.forks[second]);
-	if (!check_if_alive())
-	{
-		pthread_mutex_unlock(&data()->mutex.forks[second]);
-		pthread_mutex_unlock(&data()->mutex.forks[first]);
-		return (FALSE);
-	}
-	print_message(philo->id, "has taken second fork", GREY);
-	print_message(philo->id, "is eating", GREEN);
-	pthread_mutex_lock(&data()->mutex.is_alive);
-	data()->eat_time[philo->id - 1] = 0;
-	pthread_mutex_unlock(&data()->mutex.is_alive);
-	my_sleep(data()->time_to[eat]);
-	pthread_mutex_lock(&data()->mutex.is_alive);
-	data()->eat_time[philo->id - 1] = get_program_time(0);
-	pthread_mutex_unlock(&data()->mutex.is_alive);
-	pthread_mutex_unlock(&data()->mutex.forks[second]);
-	pthread_mutex_unlock(&data()->mutex.forks[first]);
-	return (TRUE);
-}
-
 void	philo_sleep_think(t_philo *philo)
 {
-	struct timeval	start;
+	long long	time_left;
 
-	gettimeofday(&start, NULL);
 	if (!check_if_alive())
 		return ;
 	print_message(philo->id, "is sleeping", BLUE);
@@ -61,13 +23,15 @@ void	philo_sleep_think(t_philo *philo)
 	if (!check_if_alive())
 		return ;
 	print_message(philo->id, "is thinking", PURPLE);
-	my_sleep(10);
+	time_left = get_program_time(data()->eat_time[philo->id - 1]);
+	if (data()->time_to[die] - time_left >= 5)
+		my_sleep(1);
 }
 
 void	philo_die(int philo_id)
 {
-	print_message(philo_id, "is dead", RED);
 	pthread_mutex_lock(&data()->mutex.is_alive);
+	print_message(philo_id, "is dead", RED);
 	data()->all_alive = FALSE;
 	pthread_mutex_unlock(&data()->mutex.is_alive);
 }
@@ -81,12 +45,12 @@ int	check_if_alive(void)
 	int				i;
 
 	pthread_mutex_lock(&data()->mutex.is_alive);
-	if (!data()->all_alive)
+	if (!data()->all_alive
+		|| (data()->must_eat && data()->check_times_eat == data()->n_philos))
 	{
 		pthread_mutex_unlock(&data()->mutex.is_alive);
 		return (FALSE);
 	}
-	// pthread_mutex_lock(&data()->mutex.is_alive);
 	i = -1;
 	while (++i < data()->n_philos)
 	{
@@ -94,32 +58,10 @@ int	check_if_alive(void)
 		if (eat_time && get_program_time(eat_time) > data()->time_to[die])
 		{
 			pthread_mutex_unlock(&data()->mutex.is_alive);
-			// pthread_mutex_unlock(&data()->mutex.is_alive);
 			philo_die(i + 1);
 			return (FALSE);
 		}
 	}
-	// pthread_mutex_unlock(&data()->mutex.is_alive);
 	pthread_mutex_unlock(&data()->mutex.is_alive);
 	return (TRUE);
-}
-
-static void	decide_fork(t_philo *philo, int *first, int *second)
-{
-	int	right_fork;
-
-	if (philo->id == 1)
-	right_fork = data()->n_philos - 1;
-	else
-		right_fork = philo->id - 2;
-	if (philo->id % 2 == 0)
-	{
-		*first = right_fork;
-		*second = philo->id - 1;
-	}
-	else
-	{
-		*first = philo->id - 1;
-		*second = right_fork;
-	}
 }
