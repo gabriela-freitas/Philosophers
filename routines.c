@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 19:16:40 by gafreita          #+#    #+#             */
-/*   Updated: 2022/10/02 15:44:02 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/10/03 18:44:04 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,12 @@ void	philo_sleep_think(t_philo *philo)
 		return ;
 	print_message(philo->id, "is thinking", PURPLE);
 	time_left = get_program_time(data()->eat_time[philo->id - 1]);
-	if (data()->time_to[die] - time_left >= 5)
+	if (data()->time_to[die] - time_left >= 10)
 		my_sleep(1);
 }
 
 void	philo_die(int philo_id)
 {
-	pthread_mutex_lock(&data()->mutex.is_alive);
 	print_message(philo_id, "is dead", RED);
 	data()->all_alive = FALSE;
 	pthread_mutex_unlock(&data()->mutex.is_alive);
@@ -57,7 +56,6 @@ int	check_if_alive(void)
 		eat_time = data()->eat_time[i];
 		if (eat_time && get_program_time(eat_time) > data()->time_to[die])
 		{
-			pthread_mutex_unlock(&data()->mutex.is_alive);
 			philo_die(i + 1);
 			return (FALSE);
 		}
