@@ -6,12 +6,11 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 18:32:02 by gafreita          #+#    #+#             */
-/*   Updated: 2022/10/02 15:55:24 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/10/03 20:54:11 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 /*evaluation tests
 
@@ -39,6 +38,7 @@ void	*routine(void *arg)
 	{
 		print_message(philo->id, "has taken first fork", GREY);
 		my_sleep(data()->time_to[die]);
+		pthread_mutex_lock(&data()->mutex.is_alive);
 		philo_die(philo->id);
 		return (FALSE);
 	}
