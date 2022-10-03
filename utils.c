@@ -6,7 +6,7 @@
 /*   By: gafreita <gafreita@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 20:36:36 by gafreita          #+#    #+#             */
-/*   Updated: 2022/10/02 13:14:11 by gafreita         ###   ########.fr       */
+/*   Updated: 2022/10/03 16:33:02 by gafreita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	clean_program(void)
 	i = -1;
 	while (++i < data()->n_philos)
 		pthread_mutex_destroy(&data()->mutex.forks[i]);
+	free(data()->eat_time);
+	free(data()->mutex.forks);
 }
 
 /*returns program_time as current time - start_time given as arg
